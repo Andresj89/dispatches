@@ -1,7 +1,7 @@
-##############################################################################
+#################################################################################
 # DISPATCHES was produced under the DOE Design Integration and Synthesis
 # Platform to Advance Tightly Coupled Hybrid Energy Systems program (DISPATCHES),
-# and is copyright (c) 2021 by the software owners: The Regents of the University
+# and is copyright (c) 2022 by the software owners: The Regents of the University
 # of California, through Lawrence Berkeley National Laboratory, National
 # Technology & Engineering Solutions of Sandia, LLC, Alliance for Sustainable
 # Energy, LLC, Battelle Energy Alliance, LLC, University of Notre Dame du Lac, et
@@ -11,7 +11,7 @@
 # information, respectively. Both files are also available online at the URL:
 # "https://github.com/gmlc-dispatches/dispatches".
 #
-##############################################################################
+#################################################################################
 """
 Tests for ConcreteTubeSide model.
 
@@ -23,16 +23,16 @@ from pyomo.environ import (ConcreteModel, TerminationCondition,
                            SolverStatus, value, units as pyunits)
 
 from idaes.core import FlowsheetBlock
-from heat_exchanger_tube import ConcreteTubeSide
-from idaes.generic_models.unit_models.heat_exchanger \
+from idaes.models.unit_models.heat_exchanger \
     import HeatExchangerFlowPattern
 
 from idaes.generic_models.properties import iapws95
 
 from idaes.core.util.model_statistics import degrees_of_freedom
 
-from idaes.core.util import get_solver
+from idaes.core.solvers import get_solver
 from idaes.core.util.testing import initialization_tester
+from .heat_exchanger_tube import ConcreteTubeSide
 
 # Get default solver for testing
 solver = get_solver()

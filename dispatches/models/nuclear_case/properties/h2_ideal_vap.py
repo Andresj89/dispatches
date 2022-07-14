@@ -1,7 +1,7 @@
-##############################################################################
+#################################################################################
 # DISPATCHES was produced under the DOE Design Integration and Synthesis
 # Platform to Advance Tightly Coupled Hybrid Energy Systems program (DISPATCHES),
-# and is copyright (c) 2021 by the software owners: The Regents of the University
+# and is copyright (c) 2022 by the software owners: The Regents of the University
 # of California, through Lawrence Berkeley National Laboratory, National
 # Technology & Engineering Solutions of Sandia, LLC, Alliance for Sustainable
 # Energy, LLC, Battelle Energy Alliance, LLC, University of Notre Dame du Lac, et
@@ -11,7 +11,7 @@
 # information, respectively. Both files are also available online at the URL:
 # "https://github.com/gmlc-dispatches/dispatches".
 #
-##############################################################################
+#################################################################################
 """
 Ideal property package for H2 vapor
 """
@@ -21,13 +21,12 @@ import logging
 from pyomo.environ import units as pyunits
 
 # Import IDAES cores
-from idaes.core import VaporPhase, Component
-from idaes.core.phases import PhaseType as PT
+from idaes.core import VaporPhase, Component, PhaseType as PT
 
-from idaes.generic_models.properties.core.state_definitions import FTPx
-from idaes.generic_models.properties.core.eos.ideal import Ideal
+from idaes.models.properties.modular_properties.state_definitions import FTPx
+from idaes.models.properties.modular_properties.eos.ideal import Ideal
 
-import idaes.generic_models.properties.core.pure.NIST as NIST
+from idaes.models.properties.modular_properties.pure.NIST import NIST
 
 # Set up logger
 _log = logging.getLogger(__name__)
@@ -46,6 +45,7 @@ configuration = {
     "components": {
         'hydrogen': {"type": Component,
                      "valid_phase_types": PT.vaporPhase,
+                     "elemental_composition": {"H": 2},
                      "cp_mol_ig_comp": NIST,
                      "enth_mol_ig_comp": NIST,
                      "entr_mol_ig_comp": NIST,

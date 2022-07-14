@@ -1,15 +1,17 @@
-##############################################################################
-# Institute for the Design of Advanced Energy Systems Process Systems
-# Engineering Framework (IDAES PSE Framework) Copyright (c) 2018-2019, by the
-# software owners: The Regents of the University of California, through
-# Lawrence Berkeley National Laboratory,  National Technology & Engineering
-# Solutions of Sandia, LLC, Carnegie Mellon University, West Virginia
-# University Research Corporation, et al. All rights reserved.
+#################################################################################
+# DISPATCHES was produced under the DOE Design Integration and Synthesis
+# Platform to Advance Tightly Coupled Hybrid Energy Systems program (DISPATCHES),
+# and is copyright (c) 2022 by the software owners: The Regents of the University
+# of California, through Lawrence Berkeley National Laboratory, National
+# Technology & Engineering Solutions of Sandia, LLC, Alliance for Sustainable
+# Energy, LLC, Battelle Energy Alliance, LLC, University of Notre Dame du Lac, et
+# al. All rights reserved.
 #
-# Please see the files COPYRIGHT.txt and LICENSE.txt for full copyright and
-# license information, respectively. Both files are also available online
-# at the URL "https://github.com/IDAES/idaes-pse".
-##############################################################################
+# Please see the files COPYRIGHT.md and LICENSE.md for full copyright and license
+# information, respectively. Both files are also available online at the URL:
+# "https://github.com/gmlc-dispatches/dispatches".
+#
+#################################################################################
 
 """This is a simple power plant model for supercritical coal-fired power plant
 This model uses some of the generic unit models in place of complex
@@ -38,9 +40,9 @@ from pyomo.environ import units
 
 # Import IDAES libraries
 from idaes.core import FlowsheetBlock, MaterialBalanceType
-from idaes.core.util import get_solver, copy_port_values as _set_port
+from idaes.core.solvers import get_solver, copy_port_values as _set_port
 from idaes.core.util.model_statistics import degrees_of_freedom
-from idaes.generic_models.unit_models import (
+from idaes.models.unit_models import (
     # Mixer,
     HeatExchanger,
     PressureChanger,
@@ -51,11 +53,11 @@ from idaes.generic_models.unit_models import (
 from idaes.power_generation.unit_models.helm import (HelmSplitter, HelmTurbineStage, HelmMixer as Mixer,
                                                         HelmIsentropicCompressor as WaterPump,
                                                         HelmNtuCondenser as CondenserHelm)
-from idaes.generic_models.unit_models.heat_exchanger import (
+from idaes.models.unit_models.heat_exchanger import (
     delta_temperature_underwood_callback, HeatExchangerFlowPattern)
-from idaes.generic_models.unit_models.pressure_changer import (
+from idaes.models.unit_models.pressure_changer import (
     ThermodynamicAssumption)
-from idaes.generic_models.unit_models.separator import (
+from idaes.models.unit_models.separator import (
     SplittingType)
 import idaes.core.util.scaling as iscale
 import idaes.logger as idaeslog

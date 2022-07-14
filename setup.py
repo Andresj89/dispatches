@@ -1,7 +1,7 @@
 ##############################################################################
 # DISPATCHES was produced under the DOE Design Integration and Synthesis
 # Platform to Advance Tightly Coupled Hybrid Energy Systems program (DISPATCHES),
-# and is copyright (c) 2021 by the software owners: The Regents of the University
+# and is copyright (c) 2022 by the software owners: The Regents of the University
 # of California, through Lawrence Berkeley National Laboratory, National
 # Technology & Engineering Solutions of Sandia, LLC, Alliance for Sustainable
 # Energy, LLC, Battelle Energy Alliance, LLC, University of Notre Dame du Lac, et
@@ -17,7 +17,7 @@ Project setup with setuptools
 """
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_namespace_packages
+from setuptools import setup, find_packages
 import pathlib
 import re
 
@@ -55,18 +55,32 @@ def read_requirements(input_file):
     return req
 
 
-with open("requirements.txt") as f:
-    package_list = read_requirements(f)
+class SpecialDependencies:
+    """
+    The following packages require special treatment, as they change rapidly between release cycles.
+    Two separate lists of dependencies are kept:
+    - for_release: to be used when cutting a release of DISPATCHES
+    - for_prerelease: to be used for the prerelease version of DISPATCHES (i.e. the `main` branch, and all PRs targeting it)
+    """
+    # idaes-pse: for IDAES DMF -dang 12/2020
+    for_release = [
+        # NOTE: this will fail until this idaes-pse version is available on PyPI
+        "idaes-pse==2.0.0a2",
+    ]
+    for_prerelease = [
+        "idaes-pse @ https://github.com/IDAES/idaes-pse/archive/2.0.0a2.zip"
+    ]
 
-with open("requirements-dev.txt") as f:
-    dev_package_list = read_requirements(f)
+
+SPECIAL_DEPENDENCIES = SpecialDependencies.for_prerelease
+
 
 ########################################################################################
 
 setup(
     name="dispatches",
     url="https://github.com/gmlc-dispatches/dispatches",
-    version="0.0.1",
+    version="1.1.dev0",
     description="GMLC DISPATCHES software tools",
     long_description=long_description,
     long_description_content_type="text/plain",
@@ -98,9 +112,31 @@ setup(
         "Programming Language :: Python :: 3 :: Only",
     ],
     keywords="market simulation, chemical engineering, process modeling, hybrid power systems",
-    packages=find_namespace_packages(),
-    python_requires=">=3.6, <4",
-    install_requires=package_list,
-    package_data={"": ["*.json"]},  # Optional
-    extras_require={"dev": dev_package_list},
+    packages=find_packages(),
+    python_requires=">=3.7, <4",
+    install_requires=[
+        "pytest",
+        # we use jupyter notebooks
+        "jupyter",
+        # for visualizing DMF provenance
+        "graphviz",
+        "gridx-prescient>=2.1",
+        "nrel-pysam>=3.0.1",
+        *SPECIAL_DEPENDENCIES
+    ],
+    package_data={
+        "": ["*.json"],
+        "dispatches.tests.data.prescient_5bus": ["*.csv"],
+        "dispatches.models.renewables_case.tests": [
+            "rts_results_all_prices.npy",
+        ],
+        "dispatches.models.renewables_case.data": [
+           "Wind_Thermal_Dispatch.csv",
+           "309_WIND_1-SimulationOutputs.csv",
+            "44.21_-101.94_windtoolkit_2012_60min_80m.srw"
+        ],
+        "dispatches.models.fossil_case.ultra_supercritical_plant": [
+            "pfd_ultra_supercritical_pc.svg",
+        ],
+    },
 )
